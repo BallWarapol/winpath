@@ -1,6 +1,7 @@
 sudo apt-get install udisks
-sudo wget "https://winpath.googlecode.com/hg/50-winpath.rules" -O "/etc/udev/rules.d/50-winpath.rules"
-sudo chmod +x "/etc/udev/rules.d/50-winpath.rules"
+#พอใช้แล้ว login ไม่ได้อีกเลย ubuntu มัน access home ไม่ได้
+#sudo wget "https://winpath.googlecode.com/hg/50-winpath.rules" -O "/etc/udev/rules.d/50-winpath.rules"
+#sudo chmod +x "/etc/udev/rules.d/50-winpath.rules"
 sudo wget "https://winpath.googlecode.com/hg/winpath.py" -O "/usr/bin/winpath.py"
 sudo chmod +x "/usr/bin/winpath.py"
 sudo wget "https://winpath.googlecode.com/hg/winpath" -O "/usr/bin/winpath"
