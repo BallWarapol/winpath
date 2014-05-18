@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<!--
+        Copyright 2012 UhBaUnTaUh <uhbauntauh@gmail.com>
+        
+        This program is free software; you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation; either version 2 of the License, or
+        (at your option) any later version.
+        
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+        
+        You should have received a copy of the GNU General Public License
+        along with this program; if not, write to the Free Software
+        Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+        MA 02110-1301, USA.
+        
+        
+-->
+  <title>UhBaUnTaUh</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="generator" content="Geany 0.20">
+</head>
+<body>
+<h1>winPath: Windows Path for Linux Students</h1>
+winPath:
+วินพาธเป็นโปรแกรมจำลองระบบไฟล์แบบวินโดวส์เพื่อนักศึกษาลินุกส์หน้าใหม่<br>
+<h3>Path Compare: ตารางเปรียบเทียบพาธระบบของวินพาธ<br>
+</h3>
+<table style="text-align: left; width: 1260px; height: 265px;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; text-align: center;"><span
+ style="font-weight: bold;">Windows</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><span
+ style="font-weight: bold;">winPath</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><span
+ style="font-weight: bold;">Linux</span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Computer<br>
+      </td>
+      <td style="vertical-align: top;">/computer</td>
+      <td style="vertical-align: top;">/media; /mnt</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">C:\</td>
+      <td style="vertical-align: top;">/computer/c</td>
+      <td style="vertical-align: top;">/<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">C:\Users<br>
+      </td>
+      <td style="vertical-align: top;">/computer/c/users</td>
+      <td style="vertical-align: top;">/home<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">C:\Program Files<br>
+      </td>
+      <td style="vertical-align: top;">/computer/c/programs/usr<br>
+      </td>
+      <td style="vertical-align: top;">/usr<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">C:\Windows<br>
+      </td>
+      <td style="vertical-align: top;">/computer/c/windows/root</td>
+      <td style="vertical-align: top;">/<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">C:\Windows\Fonts</td>
+      <td style="vertical-align: top;">/computer/c/windows/fonts/global,
+/computer/C/windows/fonts/local</td>
+      <td style="vertical-align: top;">/usr/share/fonts; ~/.local/share/fonts<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">C:\usr\htdocs</td>
+      <td style="vertical-align: top;">/computer/c/www</td>
+      <td style="vertical-align: top;">/var/www<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h3>-โปรแกรมบนลินุกส์เป็นแบบ share library (โปรแกรมยืมโปรแกรม),
+ส่วนบนวินโดวส์เป็นแบบ stand alone (โปรแกรมเดียวมีครบ)</h3>
+<h3></h3>
+หมายความว่า วินโดวส์นั้น ไฟล์โปรแกรม (ไม่นับ config)&nbsp;
+จะอยู่รวมกันในที่เดียว คือ C:\Program Files, แต่ลินุกส์มีไฟล์หลักของ 1
+โปรแกรมกระจายกันอยู่ในหลายที่ของ /usr (ใช้ทุกยูเซอร์) และ
+/home/&lt;username&gt; (ใช้ได้เฉพาะยูเซอร์นั้นๆ) .<br>
+เช่น winPath บน Windows จะมีไฟล์ทั้งหมดอยู่ใน C:\Program Files\winPath<br>
+แต่ winPath บน Linux จะมีไฟล์กระจายอยู่ในที่เหล่านี้ /computer,<span
+ style="font-weight: bold;"> /usr</span>/bin,<span
+ style="font-weight: bold;"> /usr</span>/lib, <span
+ style="font-weight: bold;">/usr</span>/share<span
+ style="font-weight: bold;">/winPath</span>, <span
+ style="font-weight: bold;">/usr</span>/share<span
+ style="font-weight: bold;">/icons</span>
+<h3>-เครื่องหมาย "~" หมายถึง /home/&lt;username&gt; เช่น
+ชื่อล็อกอินเป็น winpath ~ ก็จะเท่ากับ /home/winpath</h3>
+<h3>-ทำความเข้าใจกับบ้านของนาย root</h3>
+นาย root เป็นเจ้าของหมู่บ้านและตึกชื่อ root ( / )
+ที่มีบ้านเก็บข้าวของแบ่งเป็นหมวดไว้หลายหลัง คือ /bin, /debian, /etc,
+/lib, /lost+found, /opt, /run, /srv, /usr, /boot, /dev, /<span
+ style="font-weight: bold;">home</span>, /lib32, /media, /proc, /sbin,
+/sys, /var, /computer, /lib64, /mnt, /root, /selinux, /tmp.<br>
+ต่อมานาย root ได้เปิดคอนโดของเขาแห่งหนึ่งชื่อ /home เป็นอพาร์ทเม้นต์ ให้<span
+ style="font-weight: bold;">ผู้ใช้</span>
+(user) รายอื่นๆ มาทำเป็นบ้านส่วนตัว
+โดยอนุญาตให้ตังชื่อห้องเป็นชื่อตัวเอง
+(username) ได้. ซึ่งนาย root เอง เรียกทุกหลังรวมๆ กันว่า home เช่น home
+ของ a คือห้อง /home/a เป็นต้น.
+นอกจากนี้ยังมีกฎในการใช้ข้าวของในบ้านต่างๆ ร่วมกับผู้ใช้อื่นๆ ด้วย.<br>
+โดยมากแล้วผู้คนในหมูบ้านนาย root
+มักจะเลียนแบบวิธีเก็บข้าวของที่ต้องใช้ร่วมกับของๆ นาย root ไปด้วย
+แต่มักจะเก็บไว้ในห้องของตัวเอง แต่ใส่ไว้ในลิ้นชักที่มีจุดนำหน้า (.)
+เพื่อไม่ให้รกห้องของตัวเอง เช่น ~/.&lt;ชื่อโปแกรมที่ใช้ร่วม&gt;,
+บางทีทำลิ้นชักเลียนแบบคลังโปรแกรม (/usr/share) ของนาย root ไปเลยเป็น
+~/.local/share/&lt;ชื่อโปรแกรม&gt;. <br>
+<h3>ผู้ใช้ใช้ของร่วมกับนาย root ได้</h3>
+ผู้ใช้ทุกรายสามารถเปิดใช้ข้าวของในบ้านหลังอื่นๆ ร่วมกับของนาย root ได้
+เท่าที่นาย root
+ประกาศิต (permission) ไว้ โดยนาย root จะเขียนป้านติดคำอนุญาตไว้ เป็นเลข
+3 หลัก สำหรับคน 3 กลุ่ม คือ หลักแรกหมายถึง <span
+ style="font-weight: bold;">ตัวเอง (owner)</span>, หลักที่สองหมายถึง <span
+ style="font-weight: bold;">ก๊ก (group)</span>, หลักที่สามหมายถึง <span
+ style="font-weight: bold;">สัตว์ทั่วไปในไตรภพ (others)</span>.<br>
+เลข แต่ละหลักบวกรวมกันจะได้ไม่เกิน 7 คือ <br>
+<span style="font-weight: bold;">1 - ใช้ทำงานการได้ แต่ห้ามอ่าน คัดลอก
+เลียนแบบ แก้ไข ลบทิ้ง ไม่ได้ทั้งนั้น </span><br>
+<span style="font-weight: bold;">2 - แก้ไขได้ ลบทิ้งได้ แต่อ่าน คัดลอก
+เลียนแบบ หรือแม้แต่เอาไปใช้ทำงานก็ไม่ได้ </span><br>
+<span style="font-weight: bold;">4 - อ่านได้ คัดลอกได้ เลียนแบบได้
+แต่ยังไม่อนุญาติให้เอาต้นฉบับไปแก้ไข ลบทิ้ง หรือ แม้แต่ใช้ทำงาน</span><br>
+<h3>เลขเหล่านี้ นาย root จะเอามาบวกกัน ถ้าเขาอยากอนุญาตให้ทำได้มากกว่า
+1 อย่าง</h3>
+<span style="font-style: italic;">ตัวอย่างเลข เช่น:</span><br>
+<span style="font-weight: bold;">นาย root แปะโน้ต ไว้บนสูตรทำอาหาร 755</span><br>
+7 ตัวแรกมาจาก 1+2+4&nbsp;&nbsp;&nbsp; ให้ตัวนาย root เองใช้งานได้ +
+แก้ไขได้ + อ่านสูตรได้<br>
+5 ตัวที่สองมาจาก 1+4 &nbsp;&nbsp;&nbsp; ให้ก๊กที่นาย root กำหนดไว้
+ใช้งานได้ + อ่านสูตรได้ (เท่าที่เปิดให้อ่าน)<br>
+5 ตัวที่ 3 ก็เหมือนกัน แต่อันนี้อนุญาตให้สรรพสัตว์ทั้งปวง<br>
+เป็นต้น<br>
+<h3>บ้านหลังต่างๆ ของนาย root: ความหมายของ Directory ต่างๆ บน Linux</h3>
+<span style="font-style: italic; font-weight: bold;">/bin</span> :
+เป็นไดเร็คทอรีที่ใช้เก็บคำสั่งทัวไป รวมทั้งคำสั่ง utilities ของระบบ<br>
+<span style="font-style: italic; font-weight: bold;">/boot</span> :
+เป็นไดเร็คทอรี่ที่เก็บ kernel และไฟล์ที่ใช้ Boot ของระบบ<br>
+<span style="font-style: italic; font-weight: bold;">/dev</span> :
+เป็นที่เก็บ device file สำหรับใช้อ้างอิงถึงตัวอุปกรณ์
+โดยอุปกรณ์ทุกตัวจะมีไฟล์เป็นของตัวเองเช่น /dev/tty0 ก็คิอ serial port
+com1<br>
+<span style="font-style: italic; font-weight: bold;">/etc</span> :
+เป็นไดเร็คทอรี่ที่สำคัญมากใช้เก็บคำสั่งเพิ่มเติม
+และใช้เก็บไฟล์ข้อมูลประเภท Config และ ไฟล์หลักๆ ที่ใช้ setup ระบบ เช่น
+rc.local<br>
+<span style="font-style: italic; font-weight: bold;">/home</span> :
+เป็นที่ใช้เก็บข้อมูลของ User ในระบบ<br>
+<span style="font-style: italic; font-weight: bold;">/lib</span> :
+เป็นที่ใช้เก็บ Libary แบบ Dynamic ที่เขียนจากภาษา C มีลักษณะคล้าย .dll
+ของ Windows<br>
+<span style="font-style: italic; font-weight: bold;">/lost+found</span>
+: เป็นที่ใช้เก็บ error ทั่วไปเกี่ยวกับ Disk<br>
+<span style="font-style: italic; font-weight: bold;">/media</span> :
+เป็นที่เก็บ device file
+สำหรับอ้างอิงถึงอุปกรณ์ทุกตัวที่จะมีไฟล์เป็นของตัวเอง cdrom
+(/media/cdrom) หรือ harddisk (/media/win) เป็นต้น<br>
+<span style="font-style: italic; font-weight: bold;">/proc</span> :
+เป็นที่สำหรับเก็บข้อมูลขณะ Process ต่างๆกำลังทำงานอยู่<br>
+<span style="font-style: italic; font-weight: bold;">/sbin</span> :
+เป็นที่ใช้เก็บคำสั่งในการดูแลระบบต่างๆ<br>
+<span style="font-style: italic; font-weight: bold;">/tmp</span> :
+เป็นที่ใช้เก็บไฟล์ชั่วคราว<br>
+<span style="font-style: italic; font-weight: bold;">/usr</span> :
+เป็นไดเร็คทอรีย่อยในการ setup ระบบ<br>
+<span style="font-style: italic; font-weight: bold;">/usr/bin</span> :
+เก็บคำสั่งทั่วไป<br>
+<span style="font-style: italic; font-weight: bold;">/var</span> :
+เป็นที่ใช้เก็บข้อมูลที่เปลี่ยนแปลงตลอดเวลา อย่างเช่น /www&nbsp;
+ซึ่งเป็นที่เก็บ html php ไฟล์&nbsp;&nbsp; ,/log เป็นที่เก็บ log ต่างๆ<br>
+(ขอบคุณ: <a
+ href="http://www.skz2.go.th/webict/index.php/component/content/article/3-gram/20--linuxunix">http://www.skz2.go.th/webict/index.php/component/content/article/3-gram/20--linuxunix</a>)<br>
+<span
+ style="color: rgb(51, 51, 51); font-family: arial; font-size: 11px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 16px; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; background-color: rgb(255, 255, 255); display: inline ! important; float: none;"></span><br>
+<span
+ style="color: rgb(51, 51, 51); font-family: arial; font-size: 11px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 16px; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; background-color: rgb(255, 255, 255); display: inline ! important; float: none;"></span><br>
+</body>
+</html>

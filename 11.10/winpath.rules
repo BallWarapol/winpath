@@ -1,0 +1,1 @@
+SUBSYSTEM=="block", KERNEL=="s*[0-9]", RUN+="/usr/bin/winpath"

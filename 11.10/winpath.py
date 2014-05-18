@@ -1,0 +1,312 @@
+#!/usr/bin/python
+#-*-coding:utf8-*-
+import os
+import glob
+import subprocess
+import traceback
+import time
+import shutil
+import re
+from collections import namedtuple
+from operator import itemgetter
+
+devMode=False
+
+def disk_usage(path):
+    """Return disk usage statistics about the given path.
+    Returned valus is a named tuple with attributes 'total', 'used' and
+    'free', which are the amount of total, used and free space, in bytes.
+    """
+    st = os.statvfs(path)
+    free = st.f_bavail * st.f_frsize
+    total = st.f_blocks * st.f_frsize
+    used = (st.f_blocks - st.f_bfree) * st.f_frsize
+    return [total, used, free]
+
+def gig(byteL):
+    for i in range(len(byteL)):
+        byteL[i]=byteL[i]/1024/1024/1024
+    return byteL
+    
+icons=["",
+    "/usr/share/icons/oxygen/48x48/devices/drive-removable-media-usb.png",#1.usb-disk
+    "/usr/share/icons/oxygen/48x48/devices/drive-optical.png",#locked-disk
+    "/usr/share/icons/oxygen/48x48/places/folder-locked.png",
+    "/usr/share/icons/oxygen/48x48/devices/computer.png",
+    "/usr/share/icons/oxygen/48x48/status/dialog-password.png",#5
+    "/usr/share/icons/oxygen/48x48/devices/media-optical.png",#cd
+    "/usr/share/icons/oxygen/48x48/devices/drive-harddisk.png",#hdd
+    "/usr/share/icons/winpath.png",
+    "/usr/share/icons/oxygen/48x48/places/user-home.png"#9
+    ]
+def setDirIcon (path, iconNum):
+    if os.path.exists(icons[iconNum]):
+        subprocess.call(["gvfs-set-attribute", path, "metadata::custom-icon", "file://"+icons[iconNum]])
+
+def desktopFormatGenerator(name, path, icon="folder", l=[""],exe="nautilus --no-desktop  --no-default-window"):
+    l="\n".join(l)
+    return """[Desktop Entry]
+Name=%s
+Exec=%s %s
+Icon=%s
+Terminal=false
+StartupNotify=true
+Type=Application
+Categories=Application;Accessories;
+%s
+"""%(name, exe, path, icon, l)
+
+def launcherCreater(name, path, dest, icon="", l=[""], exe="nautilus --no-desktop  --no-default-window"):
+    if os.path.exists(dest):
+        os.remove(dest)
+    d=desktopFormatGenerator(name, path, icon, l, exe)
+    dest=dest+".desktop"
+    with open(dest, "w") as f:
+        f.write(d)
+    os.chmod (dest, 0777)
+        
+def getDriveInfo ():
+    """
+    Format:
+    0.'/dev/sdc5', 
+    1.'/media/v2ntfs416g', 
+    2.'fuseblk', 
+    3.'(rw,nosuid,nodev,allow_other,blksize=4096,default_permissions)', 
+    4.'v2ntfs416g', 
+    5.'/dev/scd1, /dev/disk/by-id/usb-HUAWEI_Mass_Storage-0:0, /dev/disk/by-path/pci-0000:00:1a.1-usb-0:2:1.2-scsi-0:0:0:0, /dev/cdrom1', 
+    6.'fileSys0'"""
+    hwinfo=[]
+    ls=subprocess.check_output(["hwinfo", "--partition", "--cdrom"]).strip().split("Device Files: ")
+    mnts=subprocess.check_output(["mount", "-l"])
+    for l in ls:
+        try:
+            l=l.split("\n")[0].split(", ", 1)
+            hwinfo.append(l) 
+            subprocess.call(["udisks","--mount", l[0]])
+            """z=l[0][5:7]
+            zz=l[0].rsplit("/",1)
+            if len(zz)>1: 
+                zz=zz[1]
+            else: zz=zz[0]
+            if z not  in ["sr", "mm"] and str(mnts).find(zz)==-1:
+                subprocess.call(["udisks","--mount", l[0]])"""
+        except Exception, err:
+            traceback.print_exc()
+    drives=[]
+    for l in mnts.split("\n"):
+        if l[0:5]=="/dev/":
+            l=l.split(" on ",1)
+            z=l[1].split(" type ",1)
+            z=[z[0]]+z[1].split(" ",2)
+            l=[l[0]]+z
+            try:
+                l[4]=l[4].strip().lstrip("[").rstrip("]")
+            except:
+                l.append("")
+            l[2]=l[2].lower()
+            for z in hwinfo:
+                if l[0]==z[0]:
+                    if l[2].find("iso")>-1:
+                        z.append("fileSys4")
+                    elif l[2].find("ext")>-1:
+                        z.append("fileSys3")
+                    elif l[2].find("fat")>-1:
+                        z.append("fileSys2")
+                        l[2]="fat"                       
+                    elif l[2].find("fuseblk")>-1 :
+                        z.append("fileSys1")
+                        l[2]="ntfs"
+                    else:
+                        z.append("fileSys4")
+                
+                    drives.append(l+z[1:])
+    return drives
+    
+def mkSymlink (src, ln, icoNum=-1):
+    if os.path.exists(ln):
+        os.remove(ln)
+    try:
+        os.symlink(src, ln)
+        os.chmod (ln, 0766)
+    except:
+        "print Error: mkSymlink (src, ln, icoNum=-1)"
+    if icoNum!=-1:
+        setDirIcon(ln, icoNum)
+        
+appFileName=os.path.basename(__file__)
+rootPath="/computer"
+configPath=rootPath+"/c/"+appFileName.rsplit(".",1)[0]
+beautifulPath=configPath+"/beatiful-view/computer"
+easyAccessPath=configPath+"/easyaccess-view/computer"
+computerShortcutPath=configPath+"/computerShortcut"
+cPath=rootPath+"/c"
+windowsPath=cPath+"/windows"
+fontsPath=windowsPath+"/fonts"
+programsPath=cPath+"/programs"
+usersPath=cPath+"/users"
+winePath=configPath+"/c-wine"
+lastDrives=[]
+      
+#once creating directory  
+#if not os.path.exists(rootPath):
+if 1==1:
+    z="""#-*-utf8-*-
+import os, copy, shutil
+os.mkdir('%s', 0777)
+os.chmod ('%s', 0777)
+startupFile='/etc/rc.local'
+appDir='/usr/bin'
+appPath=appDir+'/%s'
+try:
+	shutil.copy2(startupFile, startupFile+'.bk')
+except:
+	pass
+f=open(startupFile)
+z=f.read()
+f.close()
+if z.find(appPath)==-1:
+    z=z.rsplit('exit 0',1)[0]
+    z=z+"\\npython %%s\\nexit 0"%%appPath
+f=open(startupFile,'w')
+f.write(z)
+f.close()
+try:
+	shutil.copy2('%s', appDir)
+except:
+	pass
+"""%(rootPath,rootPath, appFileName.lower()+"c", appFileName.lower()+"c")
+    tmp="/tmp/"+appFileName+"-firstStart.py"
+    f=open(tmp, "w")
+    f.write(z)
+    f.close()
+    #Don't use subprocess!
+    #subprocess.call(['gksudo', 'python', tmp])
+    os.remove(tmp)
+if 1==1:
+    #clear every links, for freshy links.
+    """for l in glob.glob(rootPath+"/*"): 
+        try:
+            shutil.rmtree(l)
+        except:
+            os.remove(l)"""
+    #no need activation dirs
+    for z in [configPath,beautifulPath,easyAccessPath,computerShortcutPath, windowsPath, fontsPath, programsPath, usersPath, winePath]:
+        if not os.path.exists(z):
+            os.makedirs(z)
+            os.chmod (z, 0766)
+    setDirIcon(rootPath, 4)
+    setDirIcon(cPath, 7)
+    setDirIcon(easyAccessPath, 4)
+    setDirIcon(beautifulPath, 4)
+    setDirIcon(configPath, 8)
+    #c
+    z="C) Windows - Wine - Linux"
+    mkSymlink(rootPath+"/c", easyAccessPath+"/"+z, 7)
+    launcherCreater(z, rootPath+"/c", beautifulPath+"/"+z, icons[7], ["Name[th]="+z])
+    #windows
+    launcherCreater("/", "/", windowsPath+"/root-access", icons[5], ["Name[th]=/"], "gksudo nautilus")
+    launcherCreater("system-fonts", "/usr/share/fonts", fontsPath+"/system-fonts", icons[5], ["Name[th]=system-fonts"], "gksudo nautilus")
+    #mkSymlink("/", windowsPath+"/root")
+    #launcherCreater("Root Administrator", windowsPath+"/root", windowsPath+"/root-access", icons[5], ["Name[th]=คลิก! เพื่อแก้ไขไฟล์ใน root"], "gksudo nautilus")
+    #programs
+    launcherCreater("usr", "/usr", programsPath+"/usr-access", icons[5], ["Name[th]=usr"], "gksudo nautilus")
+    #mkSymlink("/usr", programsPath+"/usr")
+    #launcherCreater("Usr Administrator", programsPath+"/usr", programsPath+"/usr-access", icons[5], ["Name[th]=คลิก! เพื่อแก้ไขไฟล์ใน usr"], "gksudo nautilus")
+    #home
+    mkSymlink("/home", rootPath+"/c/users/home")
+    #wine
+    launcherCreater("C: of wine", winePath, cPath+"/c-of-wine", icons[7], ["Name[th]=C: ของโปรแกรม wine"])
+    #desktop icons
+    launcherCreater("Computer		Beautiful", beautifulPath, computerShortcutPath+"/beautiful", "computer", ["Name[th]=คอมพิวเตอร์		ลิงก์หน้าต่างใหม่"])
+    launcherCreater("Computer		Easy to Access", easyAccessPath, computerShortcutPath+"/easy-access", "computer", ["Name[th]=คอมพิวเตอร์		เข้าถึงง่าย"])
+    launcherCreater("Computer		Direct Access", rootPath, computerShortcutPath+"/direct-access", "computer", ["Name[th]=คอมพิวเตอร์		เข้าถึงโดยตรง"])
+    launcherCreater("winPath", computerShortcutPath, configPath+"/winpath", icons[8], ["Name[th]=วินพาธ:winPath", "Comment=winPath: Windows path on linux", "Comment[th]=ระบบไฟล์แบบวินโดวส์บนระบบลินุกส์"])
+    mkSymlink(computerShortcutPath+"/easy-access.desktop", beautifulPath+"/easy-access.desktop")
+    mkSymlink(computerShortcutPath+"/beautiful.desktop", easyAccessPath+"/beautiful.desktop")
+
+
+winDrive=""
+for l in getDriveInfo():
+        if l[2]=="ntfs" and "Windows" in subprocess.check_output(["ls", l[1]]):
+            launcherCreater("C: of old windows", l[1], rootPath+"/c/c-of-old-windows-link", icons[7], ["Name[th]=C: วินโดวส์เก่าของคุณ"])
+            winDrive=l
+            break
+
+home="/home/"+os.getlogin()
+z="c-wine-of-"+os.getlogin()
+if not os.path.exists(winePath+"/"+z):
+    wine=home+"/.wine"
+    if not os.path.exists(wine): os.makedirs(wine)
+    launcherCreater("C: of user '%s'"%os.getlogin(), wine, winePath+"/"+z, "folder", ["Name[th]=C: ของผู้ใช้ '%s'"%os.getlogin()])
+
+z="fonts-of-"+os.getlogin()
+if not os.path.exists(fontsPath+"/"+z):
+    zz=home+"/.local/share/fonts"
+    if not os.path.exists(zz): os.makedirs(zz)
+    launcherCreater("Fonts of user '%s'"%os.getlogin(), zz, fontsPath+"/"+z, "folder", ["Name[th]=โฟลเดอร์ Fonts ของผู้ใช้ '%s'"%os.getlogin()])
+    #make link per user
+    mkSymlink(computerShortcutPath+"/easy-access.desktop", home+"/easy-access.desktop")
+    mkSymlink(configPath+"/winpath.desktop", home+"/.local/share/applications/winpath.desktop")
+    with open(home+"/.gtk-bookmarks") as f:
+        d=f.read()
+    if d.find(easyAccessPath)==-1:
+        with open(home+"/.gtk-bookmarks.bk", "w") as fw:
+            fw.write(d)
+        with open(home+"/.gtk-bookmarks", "w") as fw:
+            fw.write("file://"+easyAccessPath+"\n"+d)
+
+#start
+drives=getDriveInfo()
+drives=sorted(drives, key=itemgetter(len(drives[0])-1,0))
+try:
+    for l in lastDrives:
+        if not l[0:-1] in drives:
+            for p in l[-1]:
+                os.remove(p)
+            lastDrives.remove(l)
+except Exception, err:
+    traceback.print_exc()
+c=99
+for l in drives:
+    if l in [z[:-1] for z in lastDrives]:
+        continue
+    c+=1
+    try:
+        if l[0]==winDrive[0]:
+            c-=1
+            continue
+    except Exception, err:
+        traceback.print_exc()    
+    driveLabel="Local Disk"
+    driveIcon=7
+    if l[5].find("-usb-")>-1 :
+         driveLabel="Removeable Disk"
+         driveIcon=1
+    elif l[2].find("iso")>-1:
+         driveLabel="CD-DVD Drive"
+         driveIcon=6
+         for z in os.listdir(l[1]):
+            if re.search(".ico", z):
+                icons.append(l[1]+"/"+z)
+                driveIcon=len(icons)-1
+    elif l[1]=="/home":
+        driveLabel="home-user-drive"
+        driveIcon=9           
+    elif l[1]=="/":
+        driveLabel="linux-root-system-drive"
+        driveIcon=0
+    if l[4]!="": 
+        driveLabel=l[4]
+    linkTarget="%s/%s"%(rootPath,chr(c))
+    z=gig(disk_usage(l[1]))
+    sortedByDrive="%s) %s - %s G free of %s G - %s"%(chr(c).upper(),driveLabel,z[2],z[0],l[2].upper())
+    #sortedByLabel="%s (%s:) - %s G free of %s G - %s Filesystem"%(driveLabel,chr(c).upper(),z[2],z[0],l[2].upper())
+    if not l in [z[0:-1] for z in lastDrives] :
+        mkSymlink(l[1], linkTarget, driveIcon)
+        e=easyAccessPath+"/"+sortedByDrive
+        mkSymlink(l[1], e, driveIcon)
+        b=beautifulPath+"/"+sortedByDrive
+        launcherCreater(sortedByDrive, linkTarget, b, icons[driveIcon], ["Name[th]="+sortedByDrive])
+        l.append([linkTarget,e,b])
+        lastDrives.append(l)
+            

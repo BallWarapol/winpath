@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=winPath
+Exec=nautilus --no-desktop  --no-default-window /computer/c/winpath/computerShortcut
+Icon=/usr/share/icons/winpath.png
+Terminal=false
+StartupNotify=true
+Type=Application
+Categories=Application;Accessories;
+Name[th]=วินพาธ:winPath
+Comment=winPath: Windows path on linux
+Comment[th]=ระบบไฟล์แบบวินโดวส์บนระบบลินุกส์

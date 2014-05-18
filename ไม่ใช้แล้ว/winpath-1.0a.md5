@@ -1,0 +1,8 @@
+6b5cc0388b8088e0fd4b32861628184f  usr/bin/winpath
+aa91f4618fb14a8efd0f89542b5a7345  usr/share/applications/winpath.desktop
+4dd33db4f680bfc8f149be19915049fc  usr/share/icons/winpath.png
+75cbda55a1be435f6c82d410e0316473  usr/share/winpath/winpath.en.html
+ca74f0efb5b2a3120c215e3bc3faa776  usr/share/winpath/winpath.pyc
+1386c17b27aae25242db2493adc5443e  usr/share/winpath/version
+5f9d5ca518d91c939f5e462c2fb1bb52  usr/share/winpath/winpath.th.html
+019e71c3f9afdee9100366b3e522d5b2  etc/udev/rules.d/winpath.rules
