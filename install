@@ -1,12 +1,12 @@
 sudo apt-get install udisks
-sudo wget "https://winpath.googlecode.com/git/winpath.rules" "/etc/udev/rules.d/winpath.rules"
-sudo chmod +x "/etc/udev/rules.d/winpath.rules"
-sudo wget "https://winpath.googlecode.com/git/winpath.py" -O "/usr/bin/winpath.py"
+sudo wget "https://winpath.googlecode.com/hg/50-winpath.rules" -O "/etc/udev/rules.d/50-winpath.rules"
+sudo chmod +x "/etc/udev/rules.d/50-winpath.rules"
+sudo wget "https://winpath.googlecode.com/hg/winpath.py" -O "/usr/bin/winpath.py"
 sudo chmod +x "/usr/bin/winpath.py"
-sudo wget "https://winpath.googlecode.com/git/winpath" -O "/usr/bin/winpath"
+sudo wget "https://winpath.googlecode.com/hg/winpath" -O "/usr/bin/winpath"
 sudo chmod +x "/usr/bin/winpath"
-sudo wget "https://winpath.googlecode.com/git/winpath.png" -O "/usr/share/icons/winpath48.png"
-sudo wget "https://winpath.googlecode.com/git/winpath48.png" -O "/usr/share/icons/winpath48.png"
+sudo wget "https://winpath.googlecode.com/hg/winpath.png" -O "/usr/share/icons/winpath48.png"
+sudo wget "https://winpath.googlecode.com/hg/winpath48.png" -O "/usr/share/icons/winpath48.png"
 sudo mkdir "/computer"
 sudo chmod 777 -R "/computer"
 winpath
