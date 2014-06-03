@@ -63,7 +63,7 @@ def launcherCreater(name, path, dest, icon="", l=[""], exe="xdg-open"):
 	dest=dest+".desktop"
 	with open(dest, "w") as f:
 		f.write(d)
-	os.chmod (dest, 0777)
+	os.chmod (dest, 0755)
 		
 def getDriveInfo ():
 	"""
@@ -197,7 +197,7 @@ if 1==1:
 	for z in [configPath,beautifulPath,easyAccessPath,computerShortcutPath, windowsPath, fontsPath, programsPath, usersPath, winePath]:
 		if not os.path.exists(z):
 			os.makedirs(z)
-			os.chmod (z, 0777)
+			os.chmod (z, 0755)
 	setDirIcon(rootPath, 4)
 	setDirIcon(cPath, 7)
 	setDirIcon(easyAccessPath, 4)
