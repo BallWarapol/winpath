@@ -1,1 +1,1 @@
-ACTION=="add|remove", KERNEL=="sd*", SUBSYSTEMS=="scsi", RUN+="runuser -l  winpath -c '/usr/bin/winpath'"
+ACTION=="add|remove", KERNEL=="sd*", SUBSYSTEMS=="scsi", RUN+="sudo -H -u otheruser bash -c '/usr/bin/winpath'"
