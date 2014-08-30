@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=winPath Generator
-Exec=winpath
+Name=winPath Computer
+Exec=nautilus --no-desktop  --no-default-window /computer/c/winpath/computerShortcut
 Icon=/usr/share/icons/winpath.png
 Terminal=false
 StartupNotify=true
@@ -8,4 +8,4 @@ Type=Application
 Categories=Application;Accessories;
 Name[th]=วินพาธ:winPath
 Comment=winPath: Wine path for linux
-Comment[th]=ระบบไฟล์แบบไวน์สำหรับระบบลินุกส์
+Comment[th]=ระบบไฟล์แบบไวน์บนระบบลินุกส์
