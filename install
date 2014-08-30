@@ -1,13 +1,29 @@
-sudo apt-get install udisks;
-#พอใช้แล้ว login ไม่ได้อีกเลย ubuntu มัน access home ไม่ได้;
-sudo wget "https://winpath.googlecode.com/hg/50-winpath.rules" -O "/etc/udev/rules.d/50-winpath.rules";
-sudo chmod +x "/etc/udev/rules.d/50-winpath.rules";
-sudo wget "https://winpath.googlecode.com/hg/winpath.py" -O "/usr/bin/winpath.py";
-sudo chmod +x "/usr/bin/winpath.py";
-sudo wget "https://winpath.googlecode.com/hg/winpath" -O "/usr/bin/winpath";
-sudo chmod +x "/usr/bin/winpath";
-sudo wget "https://winpath.googlecode.com/hg/winpath.png" -O "/usr/share/icons/winpath48.png";
-sudo wget "https://winpath.googlecode.com/hg/winpath48.png" -O "/usr/share/icons/winpath48.png";
-sudo mkdir "/computer";
-sudo chmod 777 -R "/computer";
-winpath;
+ตั้งใจจะทำ Distro ที่ง่ายสำหรับ Windows User หน่ะ ครับ
+
+เลยทำตัวนี้ออกมา
+
+ตั้งใจว่า อนาคต จะแอดลิงก์ USC กับ USS ไปด้วย
+(ตอนนี้ยังหา command กลางไม่ได้)
+
+ถ้าใครเห็นว่าตรงไหนสามารถปรับปรุงให้ปลอดภัยได้มากกว่านี้ แนะนำได้นะครับ
+
+ทดสอบบน 13.10 mint xfce ครับ
+
+ติดตั้ง
+[code]sudo apt-get install udisks python-pyudev;[/code]
+
+ข้างบนเสร็จแล้วค่อยก็อปอันนี้ไป enter
+[code]sudo wget "https://winpath.googlecode.com/hg/winpath.py" -O "/usr/bin/winpath.py";sudo chmod +x "/usr/bin/winpath.py";sudo wget "https://winpath.googlecode.com/hg/winpath" -O "/usr/bin/winpath";sudo chmod +x "/usr/bin/winpath";sudo wget "https://winpath.googlecode.com/hg/winpath.png" -O "/usr/share/icons/winpath48.png";sudo wget "https://winpath.googlecode.com/hg/winpath48.png" -O "/usr/share/icons/winpath48.png";sudo mkdir "/computer";sudo chmod 777 -R "/computer";winpath; [/code]
+
+-เปิดใช้ได้ที่ Nautilus ฺBookmark, / , และ home
+
+-มีให้เลือกทั้งแบบไม่มีรายละเอียด (/computer)
+แบบมีรายละเอียดเป็น Symbolic Link 
+และมีรายละเอียดแบบเป็น .desktop เป็นไอค่อนสวยงาม
+สองอันหลังนี่อยู่ใน /computer/c/winpath/computerShortcut
+
+---------------------------------------
+การปรับปรุงล่าสุด
+-ยังแก้ .rules ให้ detect พวก usb ที่เสียบใหม่ หรือ ถอดออก ไม่ได้เลยครับ
+
+[s]#บรรทัดที่ปิดไว้ เพราะพอใช้แล้ว login ไม่ได้อีกเลย ubuntu มัน access home ไม่ได้;#sudo wget "https://winpath.googlecode.com/hg/50-winpath.rules" -O "/etc/udev/rules.d/50-winpath.rules";#sudo chmod +x "/etc/udev/rules.d/50-winpath.rules";[/s]
