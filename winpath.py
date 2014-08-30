@@ -150,42 +150,7 @@ programsPath=cPath+"/programs"
 usersPath=cPath+"/users"
 winePath=configPath+"/c-wine"
 lastDrives=[]
-	  
-#once creating directory  
-#if not os.path.exists(rootPath):
-if 1==0:
-	z="""#-*-utf8-*-
-import os, copy, shutil
-os.mkdir('%s', 0777)
-os.chmod ('%s', 0777)
-startupFile='/etc/rc.local'
-appDir='/usr/bin'
-appPath=appDir+'/%s'
-try:
-	shutil.copy2(startupFile, startupFile+'.bk')
-except:
-	pass
-f=open(startupFile)
-z=f.read()
-f.close()
-if z.find(appPath)==-1:
-	z=z.rsplit('exit 0',1)[0]
-	z=z+"\\npython %%s\\nexit 0"%%appPath
-f=open(startupFile,'w')
-f.write(z)
-f.close()
-try:
-	shutil.copy2('%s', appDir)
-except:
-	pass
-"""%(rootPath,rootPath, appFileName.lower()+"c", appFileName.lower()+"c")
-	tmp="/tmp/"+appFileName+"-firstStart.py"
-	f=open(tmp, "w")
-	f.write(z)
-	f.close()
-	#Don't use subprocess!
-	#subprocess.call(['gksudo', 'python', tmp])
-	os.remove(tmp)
+
 if 1==1:
 	#clear every links, for freshy links.
 	for l in glob.glob(rootPath+"/*"): 
@@ -238,7 +203,8 @@ if 1==1:
 	#mkSymlink("/usr", programsPath+"/usr")
 	#launcherCreater("Usr Administrator", programsPath+"/usr", programsPath+"/usr-access", icons[5], ["Name[th]=คลิก! เพื่อแก้ไขไฟล์ใน usr"], "gksudo nautilus")
 	#home
-	mkSymlink("/home", rootPath+"/c/users/home")
+	home="/home/"+os.getlogin()
+	mkSymlink(home, rootPath+"/c/users/home")
 	#wine
 	launcherCreater("C: of wine", winePath, cPath+"/c-of-wine", icons[7], ["Name[th]=C: ของโปรแกรม wine"])
 	#desktop icons
@@ -271,66 +237,79 @@ if not os.path.exists(fontsPath+"/"+z):
 	#make link per user
 	mkSymlink(computerShortcutPath+"/easy-access.desktop", home+"/easy-access.desktop")
 	mkSymlink(configPath+"/winpath.desktop", home+"/.local/share/applications/winpath.desktop")
-	with open(home+"/.gtk-bookmarks") as f:
+	
+	z="/.gtk-bookmarks"
+	zz=subprocess.check_output(["lsb_release","-is"])
+	if zz >= "13.04":
+		"/.config/gtk-3.0/bookmarks"
+	with open(home+z) as f:
 		d=f.read()
 	if d.find(easyAccessPath)==-1:
-		with open(home+"/.gtk-bookmarks.bk", "w") as fw:
+		with open(home+z+".bk", "w") as fw:
 			fw.write(d)
-		with open(home+"/.gtk-bookmarks", "w") as fw:
+		with open(home+z, "w") as fw:
 			fw.write("file://"+easyAccessPath+"\n"+d)
 
-#start
-drives=getDriveInfo()
-drives=sorted(drives, key=itemgetter(len(drives[0])-1,0))
-try:
-	for l in lastDrives:
-		if not l[0:-1] in drives:
-			for p in l[-1]:
-				os.remove(p)
-			lastDrives.remove(l)
-except Exception, err:
-	traceback.print_exc()
-c=99
-for l in drives:
-	if l in [z[:-1] for z in lastDrives]:
-		continue
-	c+=1
-	try:
-		if l[0]==winDrive[0]:
-			c-=1
-			continue
-	except Exception, err:
-		traceback.print_exc()    
-	driveLabel="Local Disk"
-	driveIcon=7
-	if l[5].find("-usb-")>-1 :
-		 driveLabel="Removeable Disk"
-		 driveIcon=1
-	elif l[2].find("iso")>-1:
-		 driveLabel="CD-DVD Drive"
-		 driveIcon=6
-		 for z in os.listdir(l[1]):
-			if re.search(".ico", z):
-				icons.append(l[1]+"/"+z)
-				driveIcon=len(icons)-1
-	elif l[1]=="/home":
-		driveLabel="home-user-drive"
-		driveIcon=9           
-	elif l[1]=="/":
-		driveLabel="linux-root-system-drive"
-		driveIcon=0
-	if l[4]!="": 
-		driveLabel=l[4]
-	linkTarget="%s/%s"%(rootPath,chr(c))
-	z=gig(disk_usage(l[1]))
-	sortedByDrive="%s) %s - %s G free of %s G - %s"%(chr(c).upper(),driveLabel,z[2],z[0],l[2].upper())
-	#sortedByLabel="%s (%s:) - %s G free of %s G - %s Filesystem"%(driveLabel,chr(c).upper(),z[2],z[0],l[2].upper())
-	if not l in [z[0:-1] for z in lastDrives] :
-		mkSymlink(l[1], linkTarget, driveIcon)
-		e=easyAccessPath+"/"+sortedByDrive
-		mkSymlink(l[1], e, driveIcon)
-		b=beautifulPath+"/"+sortedByDrive
-		launcherCreater(sortedByDrive, linkTarget, b, icons[driveIcon], ["Name[th]="+sortedByDrive])
-		l.append([linkTarget,e,b])
-		lastDrives.append(l)
-			
+#start	
+def curDisks():
+	return subprocess.check_output(["ls", "-l", "/dev/disk/by-id"])
+lastDisks=curDisks()
+print getDriveInfo()	
+while 1==1:	
+	if lastDisks!=curDisks():
+		lastDisks=curDisks()
+		drives=getDriveInfo()
+		drives=sorted(drives, key=itemgetter(len(drives[0])-1,0))
+		try:
+			for l in lastDrives:
+				if not l[0:-1] in drives:
+					for p in l[-1]:
+						os.remove(p)
+					lastDrives.remove(l)
+		except Exception, err:
+			traceback.print_exc()
+		c=99
+		for l in drives:
+			if l in [z[:-1] for z in lastDrives]:
+				continue
+			c+=1
+			try:
+				if l[0]==winDrive[0]:
+					c-=1
+					continue
+			except Exception, err:
+				traceback.print_exc()    
+			driveLabel="Local Disk"
+			driveIcon=7
+			if l[6]=="1" :
+				 driveLabel="Removeable Disk"
+				 driveIcon=1
+			elif l[2].find("iso")>-1:
+				 driveLabel="CD-DVD Drive"
+				 driveIcon=6
+				 for z in os.listdir(l[1]):
+					if re.search(".ico", z):
+						icons.append(l[1]+"/"+z)
+						driveIcon=len(icons)-1
+			elif l[1]=="/home":
+				driveLabel="home-user-drive"
+				driveIcon=9           
+			elif l[1]=="/":
+				driveLabel="linux-root-system-drive"
+				driveIcon=0
+			if l[4]!="": 
+				driveLabel=l[4]
+			linkTarget="%s/%s"%(rootPath,chr(c))
+			z=gig(disk_usage(l[1]))
+			sortedByDrive="%s) %s - %s G free of %s G - %s"%(chr(c).upper(),driveLabel,z[2],z[0],l[2].upper())
+			#sortedByLabel="%s (%s:) - %s G free of %s G - %s Filesystem"%(driveLabel,chr(c).upper(),z[2],z[0],l[2].upper())
+			if not l in [z[0:-1] for z in lastDrives] :
+				mkSymlink(l[1], linkTarget, driveIcon)
+				e=easyAccessPath+"/"+sortedByDrive
+				mkSymlink(l[1], e, driveIcon)
+				b=beautifulPath+"/"+sortedByDrive
+				launcherCreater(sortedByDrive, linkTarget, b, icons[driveIcon], ["Name[th]="+sortedByDrive])
+				l.append([linkTarget,e,b])
+				lastDrives.append(l)
+	time.sleep(20)
+					
