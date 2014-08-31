@@ -241,7 +241,7 @@ if not os.path.exists(fontsPath+"/"+z):
 	z="/.gtk-bookmarks"
 	zz=subprocess.check_output(["lsb_release","-is"])
 	if zz >= "13.04":
-		"/.config/gtk-3.0/bookmarks"
+		z="/.config/gtk-3.0/bookmarks"
 	with open(home+z) as f:
 		d=f.read()
 	if d.find(easyAccessPath)==-1:
@@ -253,7 +253,7 @@ if not os.path.exists(fontsPath+"/"+z):
 #start	
 def curDisks():
 	return subprocess.check_output(["ls", "-l", "/dev/disk/by-id"])
-lastDisks=curDisks()
+lastDisks=""
 print getDriveInfo()	
 while 1==1:	
 	if lastDisks!=curDisks():
