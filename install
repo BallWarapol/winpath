@@ -10,7 +10,7 @@
 ทดสอบบน 13.10 mint xfce ครับ
 
 ติดตั้ง
-[code]sudo apt-get install udisks python-pyudev;[/code]
+[code]sudo apt-get install udisks;[/code]
 
 ข้างบนเสร็จแล้วค่อยก็อปอันนี้ไป enter
 [code]sudo wget "https://winpath.googlecode.com/hg/winpath.py" -O "/usr/bin/winpath.py";sudo chmod +x "/usr/bin/winpath.py";sudo wget "https://winpath.googlecode.com/hg/winpath" -O "/usr/bin/winpath";sudo chmod +x "/usr/bin/winpath";wget "https://winpath.googlecode.com/hg/winpath.desktop" -O  ~/".config/autostart/winpath.desktop";sudo wget "https://winpath.googlecode.com/hg/winpath-computer.desktop" -O  "/usr/share/applications/winpath-computer.desktop";sudo wget "https://winpath.googlecode.com/hg/winpath.png" -O "/usr/share/icons/winpath48.png";sudo wget "https://winpath.googlecode.com/hg/winpath48.png" -O "/usr/share/icons/winpath48.png";sudo mkdir "/computer";sudo chmod 777 -R "/computer";winpath; [/code]

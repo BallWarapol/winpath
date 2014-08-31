@@ -254,7 +254,6 @@ if not os.path.exists(fontsPath+"/"+z):
 def curDisks():
 	return subprocess.check_output(["ls", "-l", "/dev/disk/by-id"])
 lastDisks=""
-print getDriveInfo()	
 while 1==1:	
 	if lastDisks!=curDisks():
 		lastDisks=curDisks()
