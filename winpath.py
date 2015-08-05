@@ -259,7 +259,6 @@ while 1==1:
 		lastDisks=curDisks()
 		drives=getDriveInfo()
 		drives=sorted(drives, key=itemgetter(len(drives[0])-1,0))
-		print drives
 		try:
 			for l in lastDrives:
 				if not l[0:-1] in drives:
