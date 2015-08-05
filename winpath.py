@@ -312,5 +312,5 @@ while 1==1:
 				launcherCreater(sortedByDrive, linkTarget, b, icons[driveIcon], ["Name[th]="+sortedByDrive])
 				l.append([linkTarget,e,b])
 				lastDrives.append(l)
-	time.sleep(5)
+	time.sleep(15)
 					
