@@ -259,11 +259,13 @@ while 1==1:
 		lastDisks=curDisks()
 		drives=getDriveInfo()
 		drives=sorted(drives, key=itemgetter(len(drives[0])-1,0))
+		print drives
 		try:
 			for l in lastDrives:
 				if not l[0:-1] in drives:
 					for p in l[-1]:
-						os.remove(p)
+						if os.path.exists(p):
+							os.remove(p)
 					lastDrives.remove(l)
 		except Exception, err:
 			traceback.print_exc()
@@ -310,5 +312,5 @@ while 1==1:
 				launcherCreater(sortedByDrive, linkTarget, b, icons[driveIcon], ["Name[th]="+sortedByDrive])
 				l.append([linkTarget,e,b])
 				lastDrives.append(l)
-	time.sleep(20)
+	time.sleep(5)
 					
