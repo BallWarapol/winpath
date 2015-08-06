@@ -36,7 +36,7 @@ icons=["",
 	"/usr/share/icons/oxygen/48x48/status/dialog-password.png",#5
 	"/usr/share/icons/oxygen/48x48/devices/media-optical.png",#cd
 	"/usr/share/icons/oxygen/48x48/devices/drive-harddisk.png",#hdd
-	"/usr/share/icons/winpath.png",
+	"/usr/share/icons/winpath48.png",
 	"/usr/share/icons/oxygen/48x48/places/user-home.png"#9
 	]
 def setDirIcon (path, iconNum):
@@ -139,16 +139,20 @@ def mkSymlink (src, ln, icoNum=-1):
 		
 appFileName=os.path.basename(__file__)
 rootPath="/opt/winpath"
-configPath=rootPath+"/c/"+appFileName.rsplit(".",1)[0]
-beautifulPath=configPath+"/beatiful-view/computer"
-easyAccessPath=configPath+"/easyaccess-view/computer"
-computerShortcutPath=configPath+"/computerShortcut"
+computerPath="/computer"
 cPath=rootPath+"/c"
 windowsPath=cPath+"/windows"
 fontsPath=windowsPath+"/fonts"
 programsPath=cPath+"/programs"
 usersPath=cPath+"/users"
+appName=appFileName.rsplit(".",1)[0]
+appDir="/usr/bin"
+configPath=programsPath+"/"+appName
+beautifulPath=configPath+"/beatiful-view/computer"
+easyAccessPath=configPath+"/easyaccess-view/computer"
+computerShortcutPath=configPath+"/computerShortcut"
 winePath=configPath+"/c-wine"
+home="/home/"+os.getlogin()
 lastDrives=[]
 
 if 1==1:
@@ -159,7 +163,7 @@ if 1==1:
 		except:
 			os.remove(l)
 	#no need activation dirs
-	for z in [configPath,beautifulPath,easyAccessPath,computerShortcutPath, windowsPath, fontsPath, programsPath, usersPath, winePath]:
+	for z in [cPath, programsPath, configPath,beautifulPath,easyAccessPath,computerShortcutPath, windowsPath, fontsPath, winePath, home+"/.fonts"]:
 		if not os.path.exists(z):
 			os.makedirs(z)
 			os.chmod (z, 0777)
@@ -203,17 +207,21 @@ if 1==1:
 	#mkSymlink("/usr", programsPath+"/usr")
 	#launcherCreater("Usr Administrator", programsPath+"/usr", programsPath+"/usr-access", icons[5], ["Name[th]=คลิก! เพื่อแก้ไขไฟล์ใน usr"], "gksudo nautilus")
 	#home
-	home="/home/"+os.getlogin()
-	mkSymlink(home, rootPath+"/c/users/home")
+	mkSymlink("/home", rootPath+"/c/users")
 	#wine
 	launcherCreater("C: of wine", winePath, cPath+"/c-of-wine", icons[7], ["Name[th]=C: ของโปรแกรม wine"])
 	#desktop icons
 	launcherCreater("Computer       Beautiful", beautifulPath, computerShortcutPath+"/beautiful", "computer", ["Name[th]=คอมพิวเตอร์        ลิงก์หน้าต่างใหม่"])
 	launcherCreater("Computer       Easy to Access", easyAccessPath, computerShortcutPath+"/easy-access", "computer", ["Name[th]=คอมพิวเตอร์        เข้าถึงง่าย"])
+	launcherCreater("Computer       Beautiful", beautifulPath, easyAccessPath+"/beautiful", "computer", ["Name[th]=คอมพิวเตอร์        ลิงก์หน้าต่างใหม่"])
+	launcherCreater("Computer       Easy to Access", easyAccessPath, beautifulPath+"/easy-access", "computer", ["Name[th]=คอมพิวเตอร์        เข้าถึงง่าย"])
 	launcherCreater("Computer       Direct Access", rootPath, computerShortcutPath+"/direct-access", "computer", ["Name[th]=คอมพิวเตอร์     เข้าถึงโดยตรง"])
-	launcherCreater("winPath", computerShortcutPath, configPath+"/winpath", icons[8], ["Name[th]=วินพาธ:winPath", "Comment=winPath: Windows path on linux", "Comment[th]=ระบบไฟล์แบบวินโดวส์บนระบบลินุกส์"])
-	mkSymlink(computerShortcutPath+"/easy-access.desktop", beautifulPath+"/easy-access.desktop")
-	mkSymlink(computerShortcutPath+"/beautiful.desktop", easyAccessPath+"/beautiful.desktop")
+	launcherCreater("winPath", computerShortcutPath, computerShortcutPath+"/winpath", icons[8], ["Name[th]=วินพาธ:winPath", "Comment=winPath: Windows path on linux", "Comment[th]=ระบบไฟล์แบบวินโดวส์บนระบบลินุกส์"])
+	#launcherCreater("winPath", computerShortcutPath, home+"/.config/autostart/winpath", icons[8], ["Name[th]=วินพาธ:winPath", "Comment=winPath: Windows path on linux", "Comment[th]=ระบบไฟล์แบบวินโดวส์บนระบบลินุกส์"], appDir+"/"+appName)
+	#mkSymlink(beautifulPath, easyAccessPath+"/easy-access")
+	#mkSymlink(easyAccessPath, beautifulPath+"/beautiful")
+	#mkSymlink(computerShortcutPath+"/easy-access.desktop", computerShortcutPath+"/easy-access.desktop")
+	#mkSymlink(computerShortcutPath+"/beautiful.desktop", computerShortcutPath+"/beautiful.desktop")
 
 winDrive=""
 for l in getDriveInfo():
@@ -224,14 +232,15 @@ for l in getDriveInfo():
 
 home="/home/"+os.getlogin()
 z="c-wine-of-"+os.getlogin()
-if not os.path.exists(winePath+"/"+z):
+if not os.path.exists(winePath+"/"+z):	#launcherCreater("Usr Administrator", programsPath+"/usr", programsPath+"/usr-access", icons[5], ["Name[th]=คลิก! เพื่อแก้ไขไฟล์ใน usr"], "gksudo nautilus")
+
 	wine=home+"/.wine"
 	if not os.path.exists(wine): os.makedirs(wine)
 	launcherCreater("C: of user '%s'"%os.getlogin(), wine, winePath+"/"+z, "folder", ["Name[th]=C: ของผู้ใช้ '%s'"%os.getlogin()])
 
 z="fonts-of-"+os.getlogin()
 if not os.path.exists(fontsPath+"/"+z):
-	zz=home+"/.local/share/fonts"
+	zz=home+"/.fonts"
 	if not os.path.exists(zz): os.makedirs(zz)
 	launcherCreater("Fonts of user '%s'"%os.getlogin(), zz, fontsPath+"/"+z, "folder", ["Name[th]=โฟลเดอร์ Fonts ของผู้ใช้ '%s'"%os.getlogin()])
 	#make link per user
@@ -244,11 +253,11 @@ if not os.path.exists(fontsPath+"/"+z):
 		z="/.config/gtk-3.0/bookmarks"
 	with open(home+z) as f:
 		d=f.read()
-	if d.find(easyAccessPath)==-1:
+	if d.find(computerPath)==-1:
 		with open(home+z+".bk", "w") as fw:
 			fw.write(d)
 		with open(home+z, "w") as fw:
-			fw.write("file://"+easyAccessPath+"\n"+d)
+			fw.write("file://"+computerPath+"\n"+d)
 
 #start	
 def curDisks():
@@ -313,3 +322,6 @@ while 1==1:
 				lastDrives.append(l)
 	time.sleep(15)
 					
+"""
+sudo wget "https://raw.githubusercontent.com/BallWarapol/winpath/master/winpath.py" -O "/usr/bin/winpath.py";sudo chmod +x "/usr/bin/winpath.py";sudo wget "https://raw.githubusercontent.com/BallWarapol/winpath/master/winpath" -O "/usr/bin/winpath";sudo chmod +x "/usr/bin/winpath";sudo wget -c  "https://raw.githubusercontent.com/BallWarapol/winpath/master/winpath.png" -O "/usr/share/icons/winpath48.png";sudo wget -c  "https://raw.githubusercontent.com/BallWarapol/winpath/master/winpath48.png" -O "/usr/share/icons/winpath48.png";sudo mkdir -p  /usr/share/icons/oxygen/48x48/devices;sudo mkdir -p  /usr/share/icons/oxygen/48x48/places;sudo mkdir -p  /usr/share/icons/oxygen/48x48/status;sudo wget -c  "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/status/dialog-password.png" -O "/usr/share/icons/oxygen/48x48/status/dialog-password.png";sudo wget -c  "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/devices/computer.png" -O "/usr/share/icons/oxygen/48x48/devices/computer.png";sudo wget -c  "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/devices/drive-harddisk.png" -O "/usr/share/icons/oxygen/48x48/devices/drive-harddisk.png";sudo wget -c  "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/devices/media-optical.png" -O "/usr/share/icons/oxygen/48x48/devices/media-optical.png";sudo wget -c  "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/devices/drive-removable-media-usb.png" -O "/usr/share/icons/oxygen/48x48/devices/drive-removable-media-usb.png";sudo wget -c  "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/places/folder-locked.png" -O "/usr/share/icons/oxygen/48x48/places/folder-locked.png";sudo wget -c  "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/places/user-home.png" -O "/usr/share/icons/oxygen/48x48/places/user-home.png"; sudo rm -drf /computer;sudo rm -drf /opt/winpath;sudo mkdir /opt/winpath;sudo ln -s /opt/winpath /computer; sudo chmod 777 /opt/winpath -R;echo "" >> ~/".gtk-bookmarks";winpath; 
+"""
