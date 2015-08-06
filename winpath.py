@@ -138,7 +138,7 @@ def mkSymlink (src, ln, icoNum=-1):
 		setDirIcon(ln, icoNum)
 		
 appFileName=os.path.basename(__file__)
-rootPath="/computer"
+rootPath="/opt/winpath"
 configPath=rootPath+"/c/"+appFileName.rsplit(".",1)[0]
 beautifulPath=configPath+"/beatiful-view/computer"
 easyAccessPath=configPath+"/easyaccess-view/computer"
@@ -292,23 +292,23 @@ while 1==1:
 						icons.append(l[1]+"/"+z)
 						driveIcon=len(icons)-1
 			elif l[1]=="/home":
-				driveLabel="home-user-drive"
+				driveLabel="linux-users-drive(home)"
 				driveIcon=9           
 			elif l[1]=="/":
-				driveLabel="linux-root-system-drive"
-				driveIcon=0
+				driveLabel="linux-windows-folder(root)"
+				driveIcon=7
 			if l[4]!="": 
 				driveLabel=l[4]
 			linkTarget="%s/%s"%(rootPath,chr(c))
 			z=gig(disk_usage(l[1]))
 			sortedByDrive="%s) %s - %s G free of %s G - %s"%(chr(c).upper(),driveLabel,z[2],z[0],l[2].upper())
-			#sortedByLabel="%s (%s:) - %s G free of %s G - %s Filesystem"%(driveLabel,chr(c).upper(),z[2],z[0],l[2].upper())
+			sortedByLabel="%s (%s:) - %s G free of %s G - %s Filesystem"%(driveLabel,chr(c).upper(),z[2],z[0],l[2].upper())
 			if not l in [z[0:-1] for z in lastDrives] :
 				mkSymlink(l[1], linkTarget, driveIcon)
 				e=easyAccessPath+"/"+sortedByDrive
 				mkSymlink(l[1], e, driveIcon)
 				b=beautifulPath+"/"+sortedByDrive
-				launcherCreater(sortedByDrive, linkTarget, b, icons[driveIcon], ["Name[th]="+sortedByDrive])
+				launcherCreater(sortedByLabel, linkTarget, b, icons[driveIcon], ["Name[th]="+sortedByDrive])
 				l.append([linkTarget,e,b])
 				lastDrives.append(l)
 	time.sleep(15)
