@@ -7,13 +7,13 @@
 
 ถ้าใครเห็นว่าตรงไหนสามารถปรับปรุงให้ปลอดภัยได้มากกว่านี้ แนะนำได้นะครับ
 
-ทดสอบบน 13.10 mint xfce ครับ
+ทดสอบบน 13.10 (mint xfce), 14.04+16.04 (unity) ครับ
 
 ติดตั้ง
 [code]sudo apt-get install udisks;[/code]
 
 ข้างบนเสร็จแล้วค่อยก็อปอันนี้ไป enter
-[code]sudo wget "https://winpath.googlecode.com/hg/winpath.py" -O "/usr/bin/winpath.py";sudo chmod +x "/usr/bin/winpath.py";sudo wget "https://winpath.googlecode.com/hg/winpath" -O "/usr/bin/winpath";sudo chmod +x "/usr/bin/winpath";wget "https://winpath.googlecode.com/hg/winpath.desktop" -O  ~/".config/autostart/winpath.desktop";sudo wget "https://winpath.googlecode.com/hg/winpath-computer.desktop" -O  "/usr/share/applications/winpath-computer.desktop";sudo wget "https://winpath.googlecode.com/hg/winpath.png" -O "/usr/share/icons/winpath48.png";sudo wget "https://winpath.googlecode.com/hg/winpath48.png" -O "/usr/share/icons/winpath48.png";sudo mkdir "/computer";sudo chmod 777 -R "/computer";winpath; [/code]
+[code]sudo wget "https://raw.githubusercontent.com/BallWarapol/winpath/master/winpath.py" -O "/usr/bin/winpath.py";sudo chmod +x "/usr/bin/winpath.py";sudo wget "https://raw.githubusercontent.com/BallWarapol/winpath/master/winpath" -O "/usr/bin/winpath";sudo chmod +x "/usr/bin/winpath";sudo wget "https://raw.githubusercontent.com/BallWarapol/winpath/master/winpath.png" -O "/usr/share/icons/winpath48.png";sudo wget "https://raw.githubusercontent.com/BallWarapol/winpath/master/winpath48.png" -O "/usr/share/icons/winpath48.png";sudo mkdir -p  /usr/share/icons/oxygen/48x48/devices;sudo mkdir -p  /usr/share/icons/oxygen/48x48/places;sudo mkdir -p  /usr/share/icons/oxygen/48x48/status;sudo wget "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/status/dialog-password.png" -O "/usr/share/icons/oxygen/48x48/status/dialog-password.png";sudo wget "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/devices/computer.png" -O "/usr/share/icons/oxygen/48x48/devices/computer.png";sudo wget "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/devices/drive-harddisk.png" -O "/usr/share/icons/oxygen/48x48/devices/drive-harddisk.png";sudo wget "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/devices/media-optical.png" -O "/usr/share/icons/oxygen/48x48/devices/media-optical.png";sudo wget "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/devices/drive-removable-media-usb.png" -O "/usr/share/icons/oxygen/48x48/devices/drive-removable-media-usb.png";sudo wget "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/places/folder-locked.png" -O "/usr/share/icons/oxygen/48x48/places/folder-locked.png";sudo wget "https://raw.githubusercontent.com/pasnox/oxygen-icons-png/master/oxygen/48x48/places/user-home.png" -O "/usr/share/icons/oxygen/48x48/places/user-home.png"; sudo rm -drf /computer;sudo rm -drf /opt/winpath;sudo mkdir /opt/winpath;sudo ln -s /opt/winpath /computer; sudo chmod 777 /opt/winpath -R;echo "" >> ~/".gtk-bookmarks";winpath;[/code]
 
 -เปิดใช้ได้ที่ Nautilus ฺBookmark, / , และ home
 
