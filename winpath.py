@@ -9,6 +9,7 @@ import shutil
 import re
 from collections import namedtuple
 from operator import itemgetter
+os.getlogin = lambda: pwd.getpwuid(os.getuid())[0]
 
 devMode=False
 
